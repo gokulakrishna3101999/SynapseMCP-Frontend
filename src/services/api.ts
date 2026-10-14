@@ -3,8 +3,15 @@ import type { ApiProblem } from '../types/auth';
 
 export const TOKEN_STORAGE_KEY = 'synapse_token';
 
+// In dev, Vite's proxy (vite.config.ts) forwards relative '/api/v1' same-origin, so VITE_API_BASE_URL
+// is unset there. In prod (Vercel frontend + Render backend are different origins, no proxy), set
+// VITE_API_BASE_URL to the backend's origin, e.g. https://synapsemcp.onrender.com.
+const backendOrigin = import.meta.env.VITE_API_BASE_URL ?? '';
+
+export const API_V1_BASE_URL = `${backendOrigin}/api/v1`;
+
 export const api = axios.create({
-  baseURL: '/api/v1',
+  baseURL: API_V1_BASE_URL,
 });
 
 api.interceptors.request.use((config) => {

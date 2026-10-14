@@ -1,4 +1,4 @@
-import { api, TOKEN_STORAGE_KEY } from './api';
+import { api, API_V1_BASE_URL, TOKEN_STORAGE_KEY } from './api';
 import type { DocumentListItem, DocumentStatusResponse, UploadResponse } from '../types/document';
 import type { AxiosProgressEvent } from 'axios';
 
@@ -24,6 +24,6 @@ export const documentService = {
   /** EventSource can't send an Authorization header, so the token travels as a query param (server-side opt-in, JwtAuthenticationFilter). */
   progressStreamUrl: (documentId: string) => {
     const token = localStorage.getItem(TOKEN_STORAGE_KEY) ?? '';
-    return `/api/v1/documents/${documentId}/progress-stream?token=${encodeURIComponent(token)}`;
+    return `${API_V1_BASE_URL}/documents/${documentId}/progress-stream?token=${encodeURIComponent(token)}`;
   },
 };
